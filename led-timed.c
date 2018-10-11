@@ -1,22 +1,26 @@
 #include "stm32_unict_lib.h"
 
-#define MIN_TIME 	2
-#define MAX_TIME 	10
-#define ST_CONFIG 	0
-#define ST_LED		1
+#define MIN_TIME 	2		// il tempo minimo del timer
+#define MAX_TIME 	10		// il tempo massimo del timer
 
-#define LED_ON  	1
+#define ST_CONFIG 	0		// status di cofigurazione
+#define ST_LED		1		// status di accensione del led
+
+#define LED_ON  	1		
 #define LED_OFF 	0
 
-int status; // the status (config, led)
-int status_led;
-int counter;
-char s_counter[5];
-int timer;
+int status;				// stato del programma (confiugrazione o led)
+int status_led;			// stato del led (acceso o spento)
+int counter;			// contatore del tempo di accensione
+char s_counter[5];		// stringa da scrivere sullo schermo
+int timer;				// contatore del tempo trascorso
 
 int main(){
-	// LED at PB0
+
+	/* CONFIGURAZIONE GPIO LED, PULSANTI E DISPLAY */
+
 	GPIO_init(GPIOB);
+	// LED at PB0
 	GPIO_config_output(GPIOB, 0);
 	// pushbutton X (PB10)
 	GPIO_config_input(GPIOB, 10);
@@ -29,6 +33,7 @@ int main(){
 	// display init
 	DISPLAY_init();
 
+	/* CONFIGURAZIONE INTERRUPT */
 
 	GPIO_config_EXTI(GPIOB, EXTI10);
 	EXTI_enable(EXTI10, FALLING_EDGE);
@@ -42,45 +47,66 @@ int main(){
 	GPIO_config_EXTI(GPIOB, EXTI6);
 	EXTI_enable(EXTI6, FALLING_EDGE);
 
-	status = ST_LED;
-	status_led = LED_ON;
-	counter = MIN_TIME;
-	timer = 0;
+	/* INIZIALIZZAZIONE VARIABILI */
+
+	status = ST_LED;		// lo stato iniziale viene impostato come accensione
+	status_led = LED_ON;	// lo stato iniziale del led è acceso
+	counter = MIN_TIME;		// il tempo di accensione è impostato al valore minimo
+	timer = 0;				// il timer del tempo trascorso è ovviamente 0
+
+	
+	/* viene stampato sul display il tempo di accensione */
 
 	sprintf(s_counter, "%4d", counter);
 	DISPLAY_puts(0, s_counter);
 
+	/* loop */
+
 	while(1){
-	switch (status) {
-		case ST_LED:
-			DISPLAY_puts(0, "");
-			if(status_led == LED_ON){
+		/* viene controllato lo stato */
+		switch (status) {
+			case ST_LED:
+				/* viene pulito il display */
+				DISPLAY_puts(0, "");
+				 /* se lo stato del led è acceso */
+				if(status_led == LED_ON){
+					/* viene atteso un tempo di un secondo */
+					delay_ms(1000);
+					 /* viene incrementato il timer del tempo trascorso */
+					++timer;
+					/* se il tempo trascorso ha raggiunto il tempo di accensione */
+					if (timer == counter) { 
+						/* si pone lo stato del led come spento */
+						status_led = LED_OFF;
+						/* si azzera il timer del tempo trascorso */
+						timer = 0;
+					}
+					/* accendiamo il led */
+					GPIO_write(GPIOB,0,1);
 
-				delay_ms(1000);
-				++timer;
-				if (timer == counter) {
-					status_led = LED_OFF;
-					timer = 0;
+					/* stampiamo sullo schermo il tempo rimanente */
+					sprintf(s_counter, "%4d", counter-timer);
+					DISPLAY_puts(0, s_counter);
+				} else if (status_led == LED_OFF){ 
+					/* spegniamo il led se lo stato del led è spento */
+					GPIO_write(GPIOB,0,0);
+
 				}
-				GPIO_write(GPIOB,0,1);
-				sprintf(s_counter, "%4d", counter-timer);
+				break;
+			case ST_CONFIG:
+				/* stampiamo sul display la schermata di configurazione */
+				sprintf(s_counter, "%4d", counter);
+				s_counter[0] = 'C';
 				DISPLAY_puts(0, s_counter);
-			} else if (status_led == LED_OFF){
-				GPIO_write(GPIOB,0,0);
-
-			}
-			break;
-		case ST_CONFIG:
-			sprintf(s_counter, "%4d", counter);
-			s_counter[0] = 'C';
-			DISPLAY_puts(0, s_counter);
-			break;
+				break;
 		}
 	}
 
 	return 0;
 
 }
+
+/* HANDLER DEGLI INTERRUPT */
 
 void EXTI4_IRQHandler(void){
 	if (EXTI_isset(EXTI4)) {
