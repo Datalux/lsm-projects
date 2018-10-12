@@ -9,11 +9,11 @@
 #define LED_ON  	1		
 #define LED_OFF 	0
 
-int status;				// stato del programma (confiugrazione o led)
+int status;			// stato del programma (confiugrazione o led)
 int status_led;			// stato del led (acceso o spento)
 int counter;			// contatore del tempo di accensione
 char s_counter[5];		// stringa da scrivere sullo schermo
-int timer;				// contatore del tempo trascorso
+int timer;			// contatore del tempo trascorso
 
 int main(){
 
@@ -49,10 +49,10 @@ int main(){
 
 	/* INIZIALIZZAZIONE VARIABILI */
 
-	status = ST_LED;		// lo stato iniziale viene impostato come accensione
+	status = ST_LED;	// lo stato iniziale viene impostato come accensione
 	status_led = LED_ON;	// lo stato iniziale del led è acceso
-	counter = MIN_TIME;		// il tempo di accensione è impostato al valore minimo
-	timer = 0;				// il timer del tempo trascorso è ovviamente 0
+	counter = MIN_TIME;	// il tempo di accensione è impostato al valore minimo
+	timer = 0;		// il timer del tempo trascorso è ovviamente 0
 
 	
 	/* viene stampato sul display il tempo di accensione */
