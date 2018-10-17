@@ -8,7 +8,7 @@ pressione di X il timer t viene azzerato. Alla pressione del tasto Y sarà
 possibile configurare t tramite i pulsanti X per incrementare e Z per 
 decrementare.
 
-### LED Temporizzato `automatic-gate.c`
+### Cancello automatico `automatic-gate.c`
 (senza uso dei trimmer)
 
 http://www.dmi.unict.it/~santoro/teaching/lsm/slides/Esercitazione_20181017.pdf
