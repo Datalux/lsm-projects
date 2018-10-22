@@ -13,7 +13,7 @@ decrementare.
 
 http://www.dmi.unict.it/~santoro/teaching/lsm/slides/Esercitazione_20181017.pdf
 
-### Cancello automatico `timer.c`
+### Timer con risoluzione del centesimo di secondo `timer.c`
 
 Esercitazione del 22 ottobre 2018
 
