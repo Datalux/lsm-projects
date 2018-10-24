@@ -68,28 +68,21 @@ void main(void)
 	while(1) {
 		switch(status){
 		case ST_IDLE:
-			sprintf(s,"%2d00", timer);
+			sprintf(s,"%02d00", timer);
 			DISPLAY_puts(0, s);
 			GPIO_write(GPIOB, 8, 1);
 			GPIO_write(GPIOB, 0, 0);
 			break;
 		case ST_SETUP:
-			sprintf(s,"%2d00", timer);
+			sprintf(s,"%02d00", timer);
 			DISPLAY_puts(0, s);
 			GPIO_write(GPIOB, 8, 1);
 			GPIO_write(GPIOB, 0, 0);
 			break;
 		case ST_RUN:
-			if(counter > (timer*100)-100){
-				sprintf(s," 0%2d", (timer*100)-counter);
-				DISPLAY_puts(0, s);
-				GPIO_write(GPIOB, 8, 1);
-			}
-			else{
-				sprintf(s,"%4d", (timer*100)-counter);
-				DISPLAY_puts(0, s);
-				GPIO_write(GPIOB, 8, 1);
-			}
+			sprintf(s,"%04d", (timer*100)-counter);
+			DISPLAY_puts(0, s);
+			GPIO_write(GPIOB, 8, 1);
 			break;
 		}
 	}
