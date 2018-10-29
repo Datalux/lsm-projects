@@ -17,3 +17,8 @@ http://www.dmi.unict.it/~santoro/teaching/lsm/slides/Esercitazione_20181017.pdf
 
 Esercitazione del 22 ottobre 2018
 
+### Sistema di controllo di un serbatoio d'acqua `tank.c`
+
+Esercitazione del 29 ottobre 2018
+
+
