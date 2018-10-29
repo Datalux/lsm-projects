@@ -69,8 +69,8 @@ void TIM2_IRQHandler(void){
 			while(!ADC_completed(ADC1)) {}
 			value = (50 * ADC_read(ADC1))/255;
 			if(valvola == ON){
-				if(water_level >= 500-value)
-					water_level = 500;
+				if(water_level >= MAX_LEVEL - value)
+					water_level = MAX_LEVEL;
 				else
 					water_level += value;
 			}
