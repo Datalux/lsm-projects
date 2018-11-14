@@ -21,4 +21,8 @@ Esercitazione del 22 ottobre 2018
 
 Esercitazione del 29 ottobre 2018
 
+### Prompt dei comandi via UART `UART-prompt.c`
+
+Esercitazione del 14 novembre 2018
+
 
